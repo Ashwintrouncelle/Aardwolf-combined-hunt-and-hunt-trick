@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<blowtorch xmlversion="2">
+  <plugins>
+    <plugin name="Shindo Combined Hunter" id="75">
+      <author>Shindo</author>
+      <description><![CDATA[
+        <html>
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>Untitled Document</title>
+            <style type="text/css">
+              body {
+              color: #999;
+              }
+            </style>
+          </head>
+
+          <body>
+            <p>This plugin is a combination of Daniel Block's two plugins for autohunt 
+              and the hunt trick.</p>
+            <h3>Auto hunt summary</h3>
+            <p>Simple automation for aardwolf hunting. Will attempt to open doors in 
+              the process, will abort if obstructions such as locked doors or quicksand 
+              are encountered. Installs the .ah [mob] command.</p>
+            <h3>Whichmob summary</h3>
+            <p>Simple automation of the aardwolf hunt trick. Installs a .ht [mob] 
+              command. The hunt trick can be started with any number preceding mobname, 
+              for example .ht 3.Gargamel, will start at 3.Gargamel and continue to look 
+              for more instances of that mob name</p>
+          </body>
+        </html>
+        ]]>
+      </description>
+      <windows />
+      <aliases />
+      <triggers>
+        <!-- Open Doors only for hunt -->
+        <trigger title="door1" 
+          pattern="^Magical wards around the .*? bounce you back\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="openDoor" fireWhen="always" />
+        </trigger>
+        <trigger title="door2" 
+          pattern="^The .*? is closed\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="openDoor" fireWhen="always" />
+        </trigger>
+
+        <!-- Advance state for hunt and hunt trick -->
+        <trigger title="hunt1" 
+          pattern="^The trail of .*? is confusing\, but you\'re reasonably sure .*? headed (.*?)\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="advanceHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="hunt2" 
+          pattern="^\s{0,1}You are certain that .*? is (.*?) from here\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="advanceHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="hunt3" 
+          pattern="^You are almost certain that .*? is (.*?) from here\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="advanceHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="hunt4" 
+          pattern="^You are confident that .*? passed through here\, heading (.*?)\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="advanceHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="hunt5" 
+          pattern="^The trail of .*? is confusing\, but you\'re reasonably sure .*? headed .*?\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="advanceHuntandHT" fireWhen="always"/>
+        </trigger>
+
+        <!-- Fail hunt BUT advance hunt trick-->
+        <trigger title="fHaHT1" 
+          pattern="^You have no idea what you\'re doing\, but maybe .*? left .*?\?$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntAvanceHT" fireWhen="always" />
+        </trigger>
+        <trigger title="fHaHT2" 
+          pattern="^You have no idea what you\'re doing\, but maybe .*? is .*?\?$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntAvanceHT" fireWhen="always" />
+        </trigger>
+        <trigger title="fHaHT3" 
+          pattern="^You couldn\'t find a path to (.*?) from here\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntAvanceHT" fireWhen="always" />
+        </trigger>
+
+        <!-- Fail hunt AND Fail hunt trick-->
+        <trigger title="fail1" 
+          pattern="^Not while you are fighting\!$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="fail2" 
+          pattern="^The .*? is locked and you do not have a key\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="fail3" 
+          pattern="^You are trapped in quicksand\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="fail4" 
+          pattern="^You need to use a boat\, fly\, or swim underwater to go there\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntandHT" fireWhen="always" />
+        </trigger>
+        <trigger title="fail5" 
+          pattern="^No one in this area by the name .*?\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntandHT" fireWhen="always" />
+        </trigger>
+
+        <!-- Fail hunt BUT end hunt trick -->
+        <trigger title="fHeHT" 
+          pattern="^You seem unable to hunt that target for some reason\.$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="failedHuntEndHT" fireWhen="always" />
+        </trigger>
+
+        <!--End hunt BUT advance hunt trick-->
+        <trigger title="eHaHT" 
+          pattern=".*? is here\!$" 
+          regexp="true" sequence="1" group="autohunt" keepEvaluating="true">
+          <script function="finishHuntAdvanceHT" fireWhen="always" />
+        </trigger>
+
+      </triggers>
+      <timers />
+      <options />
+      <script name="main" execute="true"><![CDATA[
+        Plugin_Dir = "/Shindo_lua"
+        dofile(GetPluginInstallDirectory()..Plugin_Dir.."/Hunt_backend.lua")
+        ]]>
+      </script>
+    </plugin>
+  </plugins>
+</blowtorch>
