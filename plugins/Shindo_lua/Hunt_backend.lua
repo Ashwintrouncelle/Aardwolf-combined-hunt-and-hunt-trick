@@ -98,8 +98,8 @@ function failedHuntEndHT()
     HuntType = 0
     return true
   elseif (HuntType == 2) then
+    Note(string.format("\n%sAuto-hunt-trick completed.%s\n", bgreen, dwhite))
     EnableTriggerGroup("HTcr",true)
-    Note(string.format("\n%s/AuAuto-hunt-trick completed.%s\n", bgreen, dwhite))
     SendToServer("where "..attempt.."."..Target)
     enableTriggers(false)
     HuntType = 0
@@ -122,11 +122,14 @@ function finishHuntAdvanceHT()
 end
 
 function HTparseRoom(name, line, lineCaptured)
+  local forNote =  lineCaptured["1"]
+  local RoomName = string.sub(forNote, 32)
   EnableTriggerGroup("HTcr",false)
   --[[
   Note("Room Captured.\n")
-  Note(string.format("Captured this: %s%s%s.\n", bgreen, lineCaptured["1"]), dwhite)
+  Note(string.format("Captured this: %s%s%s.\n", bgreen, RoomName, dwhite))
   --]]
+  SendToServer(string.format(".MapperPopulateRoomListArea here %s", RoomName))
 end
 
 function enableTriggers(State)

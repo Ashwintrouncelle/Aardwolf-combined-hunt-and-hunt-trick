@@ -132,9 +132,13 @@
         </trigger>
 
         <!--Capture the room the mob we are looking for is in-->
-        <trigger title="HTCR"
-          pattern="^(.*?)$"
+        <trigger title="ignore prompt"
+          pattern="^(\[.*?)$"
           regexp="true" sequence="1" group="HTcr" keepEvaluting="true">
+        </trigger>
+        <trigger title="HTCR"
+          pattern="^(.+)$"
+          regexp="true" sequence="2" group="HTcr" keepEvaluting="true">
           <script function="HTparseRoom" fireWhen="always" />
         </trigger>
       </triggers>
