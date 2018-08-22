@@ -3,6 +3,7 @@ local Target = ""
 local attempt = 0
 local HuntType = 0 -- 0 off, 1 hunt, 2 hunt trick
 
+-- Colour Stuff
 local ansi = "\27["
 local dred = "\27[0;31m"
 local dgreen = "\27[0;32m"
